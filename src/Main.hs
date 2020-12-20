@@ -1,30 +1,21 @@
 #!/usr/bin/env stack
 -- stack runghc --package reanimate
-{-# LANGUAGE OverloadedStrings #-}
 module Main ( main ) where
 
 -- import           Data.Matrix
-import           Graphics.SvgTree
 import           Reanimate
 import           Reanimate.Builtin.Documentation
-import           Reanimate.LaTeX
-import           Reanimate.Morph.Common
-import           Reanimate.Morph.Linear
-import           Reanimate.Morph.Rotational
-import           Reanimate.Transform
 
-customDuration = 1
 
 main :: IO ()
 main = reanimate
   $ docEnv
-  $ testExampelRotation
-
-testExampelRotation = playThenReverseA $ pauseAround 0.5 0.5 $ mkAnimation 3 $ \t ->
-  withStrokeLineJoin JoinRound $
-  let src = scale 8 $ center $ latex "X"
-      dst = scale 8 $ center $ latex "H"
-  in morph rawLinear src dst t
+  $ pauseAtEnd 1
+  $ mkAnimation 3
+  $ \t ->
+      rotate (360 * t)
+    $ center
+    $ scaleToHeight 4 staticStar
 
 -- A static 'SVG' by using 'mkLinePathClosed'
 --
