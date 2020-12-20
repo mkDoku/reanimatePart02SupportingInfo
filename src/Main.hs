@@ -10,8 +10,15 @@ import           Reanimate.Builtin.Documentation
 main :: IO ()
 main = reanimate
   $ docEnv
+--  $ staticFrame 1
+--  $ staticStar
   $ pauseAtEnd 1
-  $ mkAnimation 3
+  $ rotatingStar
+
+
+rotatingStar :: Animation
+rotatingStar =
+  mkAnimation 3
   $ \t ->
       rotate (360 * t)
     $ center
@@ -23,18 +30,20 @@ main = reanimate
 -- be connected to the first point
 staticStar :: SVG
 staticStar =
-  mkLinePathClosed
-    [ leftBottom
-      , middleTop
-      , rightBottom
-      , leftCustom
-      , rightCustom
-    ]
+  mkLinePathClosed coordsInCartesianU
 
--- Some coordinates
-leftBottom   = (screenLeft, screenBottom)
-middleTop    = (0, screenTop)
-rightBottom  = (screenRight, screenBottom)
-customHeigth = 1
-leftCustom   = (screenLeft, customHeigth)
-rightCustom  = (screenRight, customHeigth)
+fromDegrees :: Floating a => a -> a
+fromDegrees deg = deg * pi / 180
+
+fromPolar :: Floating a => a -> a -> (a, a)
+fromPolar r phi = (x, y)
+  where
+    x = r * sin( fromDegrees phi )
+    y = r * cos( fromDegrees phi )
+
+fromPolarU :: Floating a => a -> (a, a)
+fromPolarU = fromPolar 1
+
+coordsInPolar = [0, 144, 288, 72, 216]
+
+coordsInCartesianU = fmap fromPolarU coordsInPolar
