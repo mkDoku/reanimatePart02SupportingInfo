@@ -15,13 +15,13 @@ main = reanimate
   $ pauseAtEnd 1
   $ rotatingStar
 
-
 rotatingStar :: Animation
 rotatingStar =
   mkAnimation 3
   $ \t ->
       rotate (360 * t)
-    $ center
+-- centering missplaces star a little bit
+--    $ center
     $ scaleToHeight 4 staticStar
 
 -- A static 'SVG' by using 'mkLinePathClosed'
